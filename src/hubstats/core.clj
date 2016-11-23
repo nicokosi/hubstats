@@ -49,6 +49,7 @@
 (defn pr-opened? [event] (= (action event) "opened"))
 
 (defn pr-review-comment-evt? [event] (= "PullRequestReviewCommentEvent" (get event "type")))
+(defn pr-event? [event] (= "PullRequestEvent" (get event "type")))
 (defn created? [review-comment] (= (get-in review-comment ["payload" "action"]) "created"))
 
 (defn -main [& args]
@@ -72,6 +73,25 @@
     (println (str (count open-prs) " open, " (count closed-prs)) "closed")
 
     (println (str "last week: " (count pr-opened-this-week) " opened, " (count pr-updated-this-week) " updated, " (count pr-closed-this-week) " closed"))
+
+    (println (str "PR opened per author for last week: "
+                  (reverse
+                    (sort-by last
+                             (->> (filter pr-event? raw-events)
+                                  (filter #(this-week? % "created_at"))
+                                  (filter #(= "opened" (get-in % ["payload" "action"])))
+                                  (map #(get-in % ["actor" "login"]))
+                                  frequencies)))))
+
+    (println (str "PR closed per author for last week: "
+                  (reverse
+                    (sort-by last
+                             (->> (filter pr-event? raw-events)
+                                  (filter #(this-week? % "created_at"))
+                                  (filter #(= "closed" (get-in % ["payload" "action"])))
+                                  (map #(get-in % ["actor" "login"]))
+                                  frequencies)))))
+
     (println (str "review comments per author for last week: "
                   (reverse
                     (sort-by last
@@ -79,4 +99,6 @@
                                   (filter created?)
                                   (filter #(this-week? % "created_at"))
                                   (map #(get-in % ["actor" "login"]))
-                                  frequencies)))))))
+                                  frequencies)))))
+
+    ))
