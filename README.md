@@ -2,6 +2,11 @@
 
 A tool to compute statistics for GitHub pull requests.
 
+## Prerequisite
+
+[Install leiningen](http://leiningen.org/#install).
+
+
 ## Usage
 
 For a public GitHub repository:
@@ -9,7 +14,8 @@ For a public GitHub repository:
 lein run $organisation $repository
 ```
 
-For a private GitHub repository, provide an access token:
+For a private GitHub repository, you have to provide an 
+[access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/):
 ```shell
 lein run $organisation $repository $access_token
 ```
