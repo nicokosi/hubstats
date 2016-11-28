@@ -41,6 +41,14 @@
 (defn pr-event? [event] (= "PullRequestEvent" (get event "type")))
 (defn created? [review-comment] (= (get-in review-comment ["payload" "action"]) "created"))
 
+(defn quit [message]
+  (.println System/err message)
+  (println "Usage: <org> <repo> [<token]")
+  (println "\torg:\tGitHub organization")
+  (println "\trepo:\tGitHub repository")
+  (println "\ttoken:\tGitHub access token")
+  (System/exit -1))
+
 (defn -main [& args]
   (let
     [org (first args)
@@ -53,7 +61,10 @@
      pr-opened-this-week (filter pr-opened? raw-events-this-week)
      pr-closed-this-week (filter pr-closed? raw-events-this-week)]
 
-    (println (str "pull requests for " org "/" repo " -> "))
+    (cond (empty? org) (quit "Missing org (parameter #1)"))
+    (cond (empty? repo) (quit "Missing repo (parameter #2)"))
+
+    (println (str "pull requests for " org "/" repo " ->"))
 
     (println (str "\tsince 1 week:"))
 

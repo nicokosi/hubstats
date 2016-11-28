@@ -23,11 +23,11 @@ lein run $organisation $repository $access_token
 Output example:
 
 ```shell
-lein run softwarevidal arthur $GITHUB_TOKEN
-softwarevidal/arthur pull requests:
-2 open, 28 closed
-last week: 5 opened, 6 updated, 4 closed
-PR opened per author for last week: (["vivianechastagner" 2] ["yves-ducourneau" 1] ["jcgay" 1] ["omabrouki" 1])
-PR closed per author for last week: (["cmahalin" 2] ["jcgay" 2])
-review comments per author for last week: (["omabrouki" 18] ["nicokosi" 4] ["jcgay" 3] ["AElMehdiVidal" 2] ["vidal-rm" 2] ["cmahalin" 1] ["vivianechastagner" 1])
+lein run softwarevidal arthur <token>
+pull requests for softwarevidal/arthur ->
+        since 1 week:
+                3 opened / 66 updated / 3 closed
+                opened per author: (["omabrouki" 1] ["jcgay" 1] ["cmahalin" 1])
+                review comments per author: (["nicokosi" 4] ["omabrouki" 3] ["jcgay" 1] ["vivianechastagner" 1])
+                closed per author: (["jcgay" 2] ["cmahalin" 1])
 ```
