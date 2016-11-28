@@ -53,11 +53,13 @@
      pr-opened-this-week (filter pr-opened? raw-events-this-week)
      pr-closed-this-week (filter pr-closed? raw-events-this-week)]
 
-    (println (str org "/" repo " pull requests:"))
+    (println (str "pull requests for " org "/" repo " -> "))
 
-    (println (str "last week: " (count pr-opened-this-week) " opened, " (count raw-events-this-week) " updated, " (count pr-closed-this-week) " closed"))
+    (println (str "\tsince 1 week:"))
 
-    (println (str "PR opened per author for last week: "
+    (println (str "\t\t" (count pr-opened-this-week) " opened / " (count raw-events-this-week) " updated / " (count pr-closed-this-week) " closed"))
+
+    (println (str "\t\topened per author: "
                   (reverse
                     (sort-by last
                              (->> (filter pr-event? raw-events)
@@ -66,21 +68,21 @@
                                   (map #(get-in % ["actor" "login"]))
                                   frequencies)))))
 
-    (println (str "PR closed per author for last week: "
-                  (reverse
-                    (sort-by last
-                             (->> (filter pr-event? raw-events)
-                                  (filter #(this-week? % "created_at"))
-                                  (filter #(= "closed" (get-in % ["payload" "action"])))
-                                  (map #(get-in % ["actor" "login"]))
-                                  frequencies)))))
-
-    (println (str "review comments per author for last week: "
+    (println (str "\t\treview comments per author: "
                   (reverse
                     (sort-by last
                              (->> (filter pr-review-comment-evt? raw-events)
                                   (filter created?)
                                   (filter #(this-week? % "created_at"))
+                                  (map #(get-in % ["actor" "login"]))
+                                  frequencies)))))
+
+    (println (str "\t\tclosed per author: "
+                  (reverse
+                    (sort-by last
+                             (->> (filter pr-event? raw-events)
+                                  (filter #(this-week? % "created_at"))
+                                  (filter #(= "closed" (get-in % ["payload" "action"])))
                                   (map #(get-in % ["actor" "login"]))
                                   frequencies)))))
 
