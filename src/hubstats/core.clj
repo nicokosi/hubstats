@@ -1,4 +1,5 @@
 (ns hubstats.core
+  (:gen-class)
   (:require
     [clojure.data.json :as json]
     [clj-time.core :as time]

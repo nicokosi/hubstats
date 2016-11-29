@@ -7,4 +7,5 @@
   :dependencies [[org.clojure/clojure "1.8.0"],
                  [org.clojure/data.json "0.2.6"],
                  [clj-time "0.12.2"]]
-  :main hubstats.core)
+  :main ^:skip-aot hubstats.core
+  :profiles {:uberjar {:aot :all}})

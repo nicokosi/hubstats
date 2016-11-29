@@ -31,3 +31,19 @@ pull requests for softwarevidal/arthur ->
                 review comments per author: (["nicokosi" 4] ["omabrouki" 3] ["jcgay" 1] ["vivianechastagner" 1])
                 closed per author: (["jcgay" 2] ["cmahalin" 1])
 ```
+
+## Command line installation
+
+Create JAR with all dependencies:
+```shell
+lein uberjar
+```
+Then launch (note that Java 8 is required):
+```shell
+java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar
+```
+
+On Unix-like systems, an alias can be created for your convenience:
+```shell
+alias hubstats='java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar'
+```shell
