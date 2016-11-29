@@ -7,7 +7,7 @@
 
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 
-(defn events
+(defn- events
   ([org repo token page]
    (try
      (json/read-str
@@ -23,25 +23,25 @@
   ([org repo token]
    (events org repo token 1 [])))
 
-(defn this-week? [map key]
+(defn- this-week? [map key]
   (time/after?
     (time-format/parse date-format (get map key))
     (time/ago (time/weeks 1))))
 
-(defn created-this-week? [event]
+(defn- created-this-week? [event]
   (this-week? event "created_at"))
 
-(defn action [event] (get-in event ["payload" "action"]))
+(defn- action [event] (get-in event ["payload" "action"]))
 
-(defn pr-closed? [event] (= (action event) "closed"))
+(defn- pr-closed? [event] (= (action event) "closed"))
 
-(defn pr-opened? [event] (= (action event) "opened"))
+(defn- pr-opened? [event] (= (action event) "opened"))
 
-(defn pr-review-comment-evt? [event] (= "PullRequestReviewCommentEvent" (get event "type")))
-(defn pr-event? [event] (= "PullRequestEvent" (get event "type")))
-(defn created? [review-comment] (= (get-in review-comment ["payload" "action"]) "created"))
+(defn- pr-review-comment-evt? [event] (= "PullRequestReviewCommentEvent" (get event "type")))
+(defn- pr-event? [event] (= "PullRequestEvent" (get event "type")))
+(defn- created? [review-comment] (= (get-in review-comment ["payload" "action"]) "created"))
 
-(defn quit [message]
+(defn- quit [message]
   (.println System/err message)
   (println "Usage: <org> <repo> [<token]")
   (println "\torg:\tGitHub organization")
