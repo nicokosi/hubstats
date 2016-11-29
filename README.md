@@ -1,6 +1,6 @@
 # hubstats
 
-A tool to compute statistics for GitHub pull requests.
+A command line tool to compute statistics for GitHub pull requests.
 
 ## Prerequisite
 
