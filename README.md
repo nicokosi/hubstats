@@ -11,19 +11,27 @@ A command line tool to compute statistics for GitHub pull requests.
 
 For a public GitHub repository:
 ```shell
-lein run $organisation $repository
+lein run --organization $organization --repository $repository
+```
+or
+```shell
+lein run -o $organization -r $repository
 ```
 
 For a private GitHub repository, you have to provide an 
 [access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/):
 ```shell
-lein run $organisation $repository $access_token
+lein run --organization $organization --repository $repository --token $token
+```
+or
+```shell
+lein run -o $organization -r $repository -t $token
 ```
 
 Output example:
 
 ```shell
-lein run softwarevidal arthur <token>
+lein run --organization softwarevidal --repository arthur --token $token
 pull requests for softwarevidal/arthur ->
         since 1 week:
                 3 opened / 66 updated / 3 closed

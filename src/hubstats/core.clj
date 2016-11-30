@@ -3,7 +3,8 @@
   (:require
     [clojure.data.json :as json]
     [clj-time.core :as time]
-    [clj-time.format :as time-format])
+    [clj-time.format :as time-format]
+    [hubstats.options :as opts])
   (:import (java.io IOException)))
 
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
@@ -44,58 +45,51 @@
 
 (defn- quit [message]
   (.println System/err message)
-  (println "Usage: <org> <repo> [<token]")
-  (println "\torg:\tGitHub organization")
-  (println "\trepo:\tGitHub repository")
-  (println "\ttoken:\tGitHub access token")
+  (println "Usage:")
+  (println "\t--organization\t\tGitHub organization")
+  (println "\t-o\t\t\tGitHub organization (shorthand)")
+  (println "\t--repository\t\tGitHub repository")
+  (println "\t-r\t\t\tGitHub repository (shorthand)")
+  (println "\t--token\t\t\tGitHub access token (optional)")
+  (println "\t-t\t\t\tGitHub access token (shorthand, optional)")
   (System/exit -1))
 
 (defn -main [& args]
-  (let
-    [org (first args)
-     repo (second args)
-     token (nth args 2 "")
-
-     raw-events (events org repo token)
-     raw-events-this-week (filter created-this-week? raw-events)
-
-     pr-opened-this-week (filter pr-opened? raw-events-this-week)
-     pr-closed-this-week (filter pr-closed? raw-events-this-week)]
-
-    (cond (empty? org) (quit "Missing org (parameter #1)"))
-    (cond (empty? repo) (quit "Missing repo (parameter #2)"))
-
-    (println (str "pull requests for " org "/" repo " ->"))
-
-    (println (str "\tsince 1 week:"))
-
-    (println (str "\t\t" (count pr-opened-this-week) " opened / " (count raw-events-this-week) " updated / " (count pr-closed-this-week) " closed"))
-
-    (println (str "\t\topened per author: "
-                  (reverse
-                    (sort-by last
-                             (->> (filter pr-event? raw-events)
-                                  (filter #(this-week? % "created_at"))
-                                  (filter #(= "opened" (get-in % ["payload" "action"])))
-                                  (map #(get-in % ["actor" "login"]))
-                                  frequencies)))))
-
-    (println (str "\t\treview comments per author: "
-                  (reverse
-                    (sort-by last
-                             (->> (filter pr-review-comment-evt? raw-events)
-                                  (filter created?)
-                                  (filter #(this-week? % "created_at"))
-                                  (map #(get-in % ["actor" "login"]))
-                                  frequencies)))))
-
-    (println (str "\t\tclosed per author: "
-                  (reverse
-                    (sort-by last
-                             (->> (filter pr-event? raw-events)
-                                  (filter #(this-week? % "created_at"))
-                                  (filter #(= "closed" (get-in % ["payload" "action"])))
-                                  (map #(get-in % ["actor" "login"]))
-                                  frequencies)))))
-
-    ))
+  (let [opts (opts/options (clojure.string/join " " args))]
+    (if (contains? opts :errors)
+      (quit "Missing arguments")
+      (let
+        [org (opts :org)
+         repo (opts :repo)
+         token (opts :token)
+         raw-events (events org repo token)
+         raw-events-this-week (filter created-this-week? raw-events)
+         pr-opened-this-week (filter pr-opened? raw-events-this-week)
+         pr-closed-this-week (filter pr-closed? raw-events-this-week)]
+        (println (str "pull requests for " org "/" repo " ->"))
+        (println (str "\tsince 1 week:"))
+        (println (str "\t\t" (count pr-opened-this-week) " opened / " (count raw-events-this-week) " updated / " (count pr-closed-this-week) " closed"))
+        (println (str "\t\topened per author: "
+                      (reverse
+                        (sort-by last
+                                 (->> (filter pr-event? raw-events)
+                                      (filter #(this-week? % "created_at"))
+                                      (filter #(= "opened" (get-in % ["payload" "action"])))
+                                      (map #(get-in % ["actor" "login"]))
+                                      frequencies)))))
+        (println (str "\t\treview comments per author: "
+                      (reverse
+                        (sort-by last
+                                 (->> (filter pr-review-comment-evt? raw-events)
+                                      (filter created?)
+                                      (filter #(this-week? % "created_at"))
+                                      (map #(get-in % ["actor" "login"]))
+                                      frequencies)))))
+        (println (str "\t\tclosed per author: "
+                      (reverse
+                        (sort-by last
+                                 (->> (filter pr-event? raw-events)
+                                      (filter #(this-week? % "created_at"))
+                                      (filter #(= "closed" (get-in % ["payload" "action"])))
+                                      (map #(get-in % ["actor" "login"]))
+                                      frequencies)))))))))
