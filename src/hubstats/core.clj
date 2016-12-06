@@ -5,18 +5,26 @@
     [clj-time.core :as time]
     [clj-time.format :as time-format]
     [hubstats.options :as opts])
-  (:import (java.io IOException)))
+  (:import
+    (java.net UnknownHostException)
+    (java.io FileNotFoundException IOException)))
 
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 
-(defn- events
+(defn github-api-events [org repo token page]
+  (json/read-str
+    (slurp
+      (str
+        "https://api.github.com/repos/" org "/" repo "/events" "?access_token=" token "&page=" page))))
+
+(defn events
   ([org repo token page]
-   (try
-     (json/read-str
-       (slurp
-         (str
-           "https://api.github.com/repos/" org "/" repo "/events" "?access_token=" token "&page=" page)))
-     (catch IOException _ nil)))
+   (when (< page 100)
+     (try
+       (github-api-events org repo token page)
+       (catch IOException e nil)                            ;TODO Check for HTTP 422? Exception message contains "Server returned HTTP response code: 422 for URL"
+       (catch UnknownHostException e (throw e))
+       (catch FileNotFoundException e (throw e)))))
   ([org repo token page acc]
    (let [events (events org repo token page)]
      (if (nil? events)
@@ -44,7 +52,6 @@
 (defn- created? [review-comment] (= (get-in review-comment ["payload" "action"]) "created"))
 
 (defn- quit [err-message]
-  (if err-message (.println System/err err-message))
   (println "Display statistics for GitHub pull requests.")
   (println "Mandatory parameters:")
   (println "\t--organization\t\tGitHub organization")
@@ -60,6 +67,7 @@
   (println "\t-d\t\t\toutput events that occcured since this number of days (shorthand, optional)")
   (println "\t--since\t\t\toutput events that occcured since a date with format '\"yyyy-MM-dd'T'HH:mm:ssZ' (optional)")
   (println "\t-s\t\t\toutput events that occcured since a date with format '\"yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)")
+  (if err-message (.println System/err err-message))
   (System/exit -1))
 
 (defn -main [& args]
@@ -89,7 +97,7 @@
       (println (str "\tsince " (if since-date since-date (if (> days 0)
                                                            (str days " day(s):")
                                                            (str weeks " week(s):")))))
-      (println (str "\t\t" (count pr-opened-this-week) " opened / " (count raw-events-this-week) " updated / " (count pr-closed-this-week) " closed"))
+      (println (str "\t\t " (count pr-opened-this-week) " opened / " (count pr-closed-this-week) " closed"))
       (println (str "\t\topened per author: "
                     (reverse
                       (sort-by last

@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [hubstats.options :refer :all]))
 
-(deftest options-tests
+(deftest ^:unit-test options-tests
   (testing "Options with long names"
     (is (=
           {:repo "1" :org "2" :token "3" :weeks "4"}
