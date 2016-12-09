@@ -23,8 +23,7 @@
                            "--since-weeks"  :weeks
                            "-w"             :weeks
                            "--since"        :since
-                           "-s"             :since})
-          errors []]
+                           "-s"             :since})]
       (if (contains? with-keywords :org)
         (if (contains? with-keywords :repo)
           (if (> 2 (count (select-keys with-keywords [:since :weeks :days])))

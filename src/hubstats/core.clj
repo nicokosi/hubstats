@@ -43,9 +43,8 @@
 (defn- pr-event? [event] (= "PullRequestEvent" (get event "type")))
 (defn- created? [review-comment] (= (get-in review-comment ["payload" "action"]) "created"))
 
-(defn- quit [message]
-  (.println System/err message)
-  (println "Usage:")
+(defn- quit [err-message]
+  (if err-message (.println System/err err-message))
   (println "Display statistics for GitHub pull requests.")
   (println "Mandatory parameters:")
   (println "\t--organization\t\tGitHub organization")
@@ -65,6 +64,7 @@
 
 (defn -main [& args]
   (let [opts (opts/options (clojure.string/join " " args))]
+    (if (empty? args) (quit nil))
     (if (some #(= % :missing-org) (opts :errors)) (quit "Missing organization"))
     (if (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))
     (if (some #(= % :several-since) (opts :errors)) (quit "Only one 'since' option is possible"))
