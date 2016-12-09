@@ -1,11 +1,14 @@
+hubstats [![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=master)](https://travis-ci.org/nicokosi/hubstats)
+============================
+
 `hubstats` is a command line tool to compute statistics for GitHub pull requests.
 
-# Prerequisite
+## Prerequisite
 
 [Install leiningen](http://leiningen.org/#install).
 
 
-# Usage
+## Usage
 
 For a public GitHub repository:
 ```shell
@@ -38,7 +41,7 @@ pull requests for softwarevidal/arthur ->
                 closed per author: (["jcgay" 2] ["cmahalin" 1])
 ```
 
-# Command line installation
+## Command line installation
 
 Create JAR with all dependencies:
 ```shell
@@ -54,6 +57,3 @@ On Unix-like systems, an alias can be created for your convenience:
 alias hubstats='java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar'
 ```
 
-
-# Build status
-[![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=master)](https://travis-ci.org/nicokosi/hubstats)
