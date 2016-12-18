@@ -1,55 +1,8 @@
 (ns hubstats.core
   (:gen-class)
   (:require
-    [clojure.data.json :as json]
-    [clj-time.core :as time]
-    [clj-time.format :as time-format]
-    [hubstats.options :as opts])
-  (:import
-    (java.net UnknownHostException)
-    (java.io FileNotFoundException IOException)))
-
-(def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
-
-(defn github-api-events [org repo token page]
-  (json/read-str
-    (slurp
-      (str
-        "https://api.github.com/repos/" org "/" repo "/events" "?access_token=" token "&page=" page))))
-
-(defn events
-  ([org repo token page]
-   (when (< page 100)
-     (try
-       (github-api-events org repo token page)
-       (catch IOException e nil)                            ;TODO Check for HTTP 422? Exception message contains "Server returned HTTP response code: 422 for URL"
-       (catch UnknownHostException e (throw e))
-       (catch FileNotFoundException e (throw e)))))
-  ([org repo token page acc]
-   (let [events (events org repo token page)]
-     (if (nil? events)
-       acc
-       (recur org repo token (inc page) (concat acc events)))))
-  ([org repo token]
-   (events org repo token 1 [])))
-
-(defn- since? [map key date]
-  (time/after?
-    (time-format/parse date-format (get map key))
-    date))
-
-(defn- created-since? [event date]
-  (since? event "created_at" date))
-
-(defn- action [event] (get-in event ["payload" "action"]))
-
-(defn- pr-closed? [event] (= (action event) "closed"))
-
-(defn- pr-opened? [event] (= (action event) "opened"))
-
-(defn- pr-review-comment-evt? [event] (= "PullRequestReviewCommentEvent" (get event "type")))
-(defn- pr-event? [event] (= "PullRequestEvent" (get event "type")))
-(defn- created? [review-comment] (= (get-in review-comment ["payload" "action"]) "created"))
+    [hubstats.github :as github]
+    [hubstats.options :as opts]))
 
 (defn- quit [err-message]
   (println "Display statistics for GitHub pull requests.")
@@ -77,48 +30,15 @@
     (if (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))
     (if (some #(= % :several-since) (opts :errors)) (quit "Only one 'since' option is possible"))
     (let
-      [org (opts :org)
-       repo (opts :repo)
-       token (opts :token)
-       raw-events (events org repo token)
-       since-date (get opts :since nil)
+      [since-date (get opts :since nil)
        days (Integer/parseInt (get opts :days "0"))
        weeks (Integer/parseInt (get opts :weeks "1"))
-       date (if since-date
-              (time-format/parse date-format since-date)
-              (time/ago
-                (if (> days 0)
-                  (time/days days)
-                  (time/weeks weeks))))
-       raw-events-this-week (filter #(created-since? % date) raw-events)
-       pr-opened-this-week (filter pr-opened? raw-events-this-week)
-       pr-closed-this-week (filter pr-closed? raw-events-this-week)]
-      (println (str "pull requests for " org "/" repo " ->"))
+       pr-stats (github/pr-stats opts)]
+      (println (str "pull requests for " (get-in pr-stats [:request :org]) "/" (get-in pr-stats [:request :repo]) " ->"))
       (println (str "\tsince " (if since-date since-date (if (> days 0)
                                                            (str days " day(s):")
                                                            (str weeks " week(s):")))))
-      (println (str "\t\t " (count pr-opened-this-week) " opened / " (count pr-closed-this-week) " closed"))
-      (println (str "\t\topened per author: "
-                    (reverse
-                      (sort-by last
-                               (->> (filter pr-event? raw-events)
-                                    (filter #(since? % "created_at" date))
-                                    (filter #(= "opened" (get-in % ["payload" "action"])))
-                                    (map #(get-in % ["actor" "login"]))
-                                    frequencies)))))
-      (println (str "\t\treview comments per author: "
-                    (reverse
-                      (sort-by last
-                               (->> (filter pr-review-comment-evt? raw-events)
-                                    (filter created?)
-                                    (filter #(since? % "created_at" date))
-                                    (map #(get-in % ["actor" "login"]))
-                                    frequencies)))))
-      (println (str "\t\tclosed per author: "
-                    (reverse
-                      (sort-by last
-                               (->> (filter pr-event? raw-events)
-                                    (filter #(since? % "created_at" date))
-                                    (filter #(= "closed" (get-in % ["payload" "action"])))
-                                    (map #(get-in % ["actor" "login"]))
-                                    frequencies))))))))
+      (println (str "\t\t " (get-in pr-stats [:opened :count]) " opened / " (get-in pr-stats [:closed :count]) " closed"))
+      (println (str "\t\topened per author: " (get-in pr-stats [:opened :count-by-author])))
+      (println (str "\t\treviewed per author: " (get-in pr-stats [:reviewed :count-by-author])))
+      (println (str "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author]))))))
