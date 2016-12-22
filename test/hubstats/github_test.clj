@@ -15,43 +15,45 @@
     (testing "Summary of pull requests when some GitHub events"
       (with-redefs
         [github-api-events read-json]
-        (pr-stats {:org "myorg" :repo "myrepo" :since "2016-12-04T00:00:00Z"})
-        (is (= {
-                :request  {:org   "myorg"
+        (is (=
+              (pr-stats {:org "myorg" :repo "myrepo" :since "2016-12-04T00:00:00Z"})
+              {
+               :request   {:org   "myorg"
                            :repo  "myrepo"
                            :since "2016-12-04T00:00:00Z"}
-                :opened   {
-                           :count           1
-                           :count-by-author {"alice" 1 "bob" 0}
+               :opened    {
+                           :count           3
+                           :count-by-author (array-map "bob" 2 "carol" 1)
                            }
-                :reviewed {
+               :commented {
                            :count           1
-                           :count-by-author {"alice" 0 "bob" 1}
+                           :count-by-author {"carol" 1}
                            }
-                :closed   {
+               :closed    {
                            :count           1
-                           :count-by-author {"alice" 1 "bob" 0}
+                           :count-by-author {"eve" 1}
                            }
-                })))))
+               })))))
 
   (testing "Summary of pull requests when no GitHub events"
     (with-redefs
       [github-api-events (fn [_ _ _ _] (json/read-str ""))]
-      (pr-stats {:org "org" :repo "repo" :since "2016-12-04T00:00:00Z"})
-      (is (= {
-              :request  {:org   "myorg"
+      (is (=
+            (pr-stats {:org "myorg" :repo "myrepo" :since "2016-12-04T00:00:00Z"})
+            {
+             :request   {:org   "myorg"
                          :repo  "myrepo"
                          :since "2016-12-04T00:00:00Z"}
-              :opened   {
+             :opened    {
                          :count           0
                          :count-by-author {}
                          }
-              :reviewed {
+             :commented {
                          :count           0
                          :count-by-author {}
                          }
-              :closed   {
+             :closed    {
                          :count           0
                          :count-by-author {}
                          }
-              })))))
+             })))))

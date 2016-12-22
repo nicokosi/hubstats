@@ -51,11 +51,20 @@
 (defn- pr-review-comment-evt? [event]
   (= "PullRequestReviewCommentEvent" (get event "type")))
 
+(defn- pr-review-evt? [event]
+  (= "PullRequestReviewEvent" (get event "type")))
+
 (defn- pr-event? [event]
   (= "PullRequestEvent" (get event "type")))
 
 (defn- created? [review-comment]
   (= (get-in review-comment ["payload" "action"]) "created"))
+
+(defn- sort-map-by-value [m]
+  (into (sorted-map-by (fn [key1 key2]
+                         (compare [(get m key2) key2]
+                                  [(get m key1) key1])))
+        m))
 
 (defn pr-stats [opts]
   (let [org (opts :org)
@@ -67,39 +76,38 @@
         date (if since-date
                (time-format/parse date-format since-date)
                (time/ago (if (> days 0) (time/days days) (time/weeks weeks))))
-        raw-events (events org repo token)
-        new-raw-events (filter #(created-since? % date) raw-events)]
+        new-raw-events (filter #(created-since? % date) (events org repo token))]
     (assoc {}
       :request {:org   org
                 :repo  repo
-                :since date}
+                :since (time-format/unparse (time-format/formatters :date-time-no-ms) date)}
       :opened {
-               :count (count (filter pr-opened? new-raw-events))
+               :count (->> (filter pr-opened? new-raw-events)
+                           (filter #(= "opened" (get-in % ["payload" "action"])))
+                           count)
                :count-by-author
-                      (reverse
-                        (sort-by last
-                                 (->> (filter pr-event? raw-events)
-                                      (filter #(since? % "created_at" date))
-                                      (filter #(= "opened" (get-in % ["payload" "action"])))
-                                      (map #(get-in % ["actor" "login"]))
-                                      frequencies)))
+                      (sort-map-by-value
+                        (->> (filter pr-event? new-raw-events)
+                             (filter #(= "opened" (get-in % ["payload" "action"])))
+                             (map #(get-in % ["actor" "login"]))
+                             frequencies))
                }
-      :reviewed {
-                 :count-by-author
-                 (reverse
-                   (sort-by last
-                            (->> (filter pr-review-comment-evt? raw-events)
-                                 (filter created?)
-                                 (filter #(since? % "created_at" date))
-                                 (map #(get-in % ["actor" "login"]))
-                                 frequencies)))
-                 }
-      :closed {:count           (count (filter pr-closed? new-raw-events))
-               :count-by-author (reverse
-                                  (sort-by last
-                                           (->> (filter pr-event? raw-events)
-                                                (filter #(since? % "created_at" date))
-                                                (filter #(= "closed" (get-in % ["payload" "action"])))
-                                                (map #(get-in % ["actor" "login"]))
-                                                frequencies)))}
+      :commented {
+                  :count (->> (filter pr-review-comment-evt? new-raw-events)
+                              (filter created?)
+                              count)
+                  :count-by-author
+                         (sort-map-by-value
+                           (->> (filter pr-review-comment-evt? new-raw-events)
+                                (filter created?)
+                                (map #(get-in % ["actor" "login"]))
+                                frequencies))
+                  }
+      :closed {:count (count (filter pr-closed? new-raw-events))
+               :count-by-author
+                      (sort-map-by-value
+                        (->> (filter pr-event? new-raw-events)
+                             (filter #(= "closed" (get-in % ["payload" "action"])))
+                             (map #(get-in % ["actor" "login"]))
+                             frequencies))}
       )))

@@ -38,7 +38,11 @@
       (println (str "\tsince " (if since-date since-date (if (> days 0)
                                                            (str days " day(s):")
                                                            (str weeks " week(s):")))))
-      (println (str "\t\t " (get-in pr-stats [:opened :count]) " opened / " (get-in pr-stats [:closed :count]) " closed"))
+      (println (str "\t\t"
+                    (get-in pr-stats [:opened :count]) " opened / "
+                    (get-in pr-stats [:commented :count]) " commented / "
+                    (get-in pr-stats [:reviewed :count]) " reviewed / "
+                    (get-in pr-stats [:closed :count]) " closed"))
       (println (str "\t\topened per author: " (get-in pr-stats [:opened :count-by-author])))
-      (println (str "\t\treviewed per author: " (get-in pr-stats [:reviewed :count-by-author])))
+      (println (str "\t\tcommented per author: " (get-in pr-stats [:commented :count-by-author])))
       (println (str "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author]))))))
