@@ -87,7 +87,7 @@
                            count)
                :count-by-author
                       (sort-map-by-value
-                        (->> (filter pr-event? new-raw-events)
+                        (->> (filter pr-opened? new-raw-events)
                              (filter #(= "opened" (get-in % ["payload" "action"])))
                              (map #(get-in % ["actor" "login"]))
                              frequencies))

@@ -41,7 +41,6 @@
       (println (str "\t\t"
                     (get-in pr-stats [:opened :count]) " opened / "
                     (get-in pr-stats [:commented :count]) " commented / "
-                    (get-in pr-stats [:reviewed :count]) " reviewed / "
                     (get-in pr-stats [:closed :count]) " closed"))
       (println (str "\t\topened per author: " (get-in pr-stats [:opened :count-by-author])))
       (println (str "\t\tcommented per author: " (get-in pr-stats [:commented :count-by-author])))
