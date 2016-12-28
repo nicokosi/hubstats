@@ -2,7 +2,9 @@
   (:require
     [clojure.data.json :as json]
     [clj-time.core :as time]
-    [clj-time.format :as time-format])
+    [clj-time.format :as time-format]
+    [clj-http.client :as http-client]
+    [slingshot.slingshot :refer [try+]])
   (:import
     (java.net UnknownHostException)
     (java.io FileNotFoundException IOException)))
@@ -10,17 +12,16 @@
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 
 (defn github-api-events [org repo token page]
-  (json/read-str
-    (slurp
-      (str
-        "https://api.github.com/repos/" org "/" repo "/events" "?access_token=" token "&page=" page))))
+  (let [url (str "https://api.github.com/repos/" org "/" repo "/events?access_token=" token "&page=" page)]
+    (json/read-str
+      ((http-client/get url {}) :body))))
 
 (defn events
   ([org repo token page]
    (when (< page 100)
-     (try
+     (try+
        (github-api-events org repo token page)
-       (catch IOException e nil)                            ;TODO Check for HTTP 422? Exception message contains "Server returned HTTP response code: 422 for URL"
+       (catch [:status 422] {} nil)
        (catch UnknownHostException e (throw e))
        (catch FileNotFoundException e (throw e)))))
   ([org repo token page acc]
@@ -50,9 +51,6 @@
 
 (defn- pr-review-comment-evt? [event]
   (= "PullRequestReviewCommentEvent" (get event "type")))
-
-(defn- pr-review-evt? [event]
-  (= "PullRequestReviewEvent" (get event "type")))
 
 (defn- pr-event? [event]
   (= "PullRequestEvent" (get event "type")))

@@ -37,7 +37,7 @@
 
   (testing "Summary of pull requests when no GitHub events"
     (with-redefs
-      [github-api-events (fn [_ _ _ _] (json/read-str ""))]
+      [github-api-events (fn [_ _ _ _] (json/read-str "{}"))]
       (is (=
             (pr-stats {:org "myorg" :repo "myrepo" :since "2016-12-04T00:00:00Z"})
             {
