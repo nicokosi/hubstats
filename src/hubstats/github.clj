@@ -4,10 +4,7 @@
     [clj-time.core :as time]
     [clj-time.format :as time-format]
     [clj-http.client :as http-client]
-    [slingshot.slingshot :refer [try+]])
-  (:import
-    (java.net UnknownHostException)
-    (java.io FileNotFoundException IOException)))
+    [slingshot.slingshot :refer [try+]]))
 
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 
@@ -21,9 +18,7 @@
    (when (< page 100)
      (try+
        (github-api-events org repo token page)
-       (catch [:status 422] {} nil)
-       (catch UnknownHostException e (throw e))
-       (catch FileNotFoundException e (throw e)))))
+       (catch [:status 422] {} nil))))
   ([org repo token page acc]
    (let [events (events org repo token page)]
      (if (nil? events)
