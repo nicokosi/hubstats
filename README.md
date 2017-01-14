@@ -59,13 +59,14 @@ Create JAR with all dependencies:
 ```shell
 lein uberjar
 ```
-Then launch (note that Java 8 is required):
+Then launch (note that Java is required):
 ```shell
 java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar
 ```
 
-On Unix-like systems, an alias can be created for your convenience:
+On Unix-like systems, you can create an executable via the following command:
 ```shell
-alias hubstats='java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar'
+./make-exec.sh hubstats
 ```
+This executable, which requires Java, can be moved to `/usr/local/bin`, for example.
 
