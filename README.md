@@ -64,11 +64,7 @@ Then launch (note that Java is required):
 java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar
 ```
 
-On Unix-like systems, an alias can be created for your convenience:
-```shell
-alias hubstats='java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar'
-```
-Alternatively, a Unix-like executable can be created:
+On Unix-like systems, you can create an executable via the following command:
 ```shell
 ./make-exec.sh hubstats
 ```
