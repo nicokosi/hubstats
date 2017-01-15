@@ -10,13 +10,11 @@ hubstats [![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=mas
 
 ## Usage
 
-For a public GitHub repository:
 ```shell
 lein run --organization $organization --repository $repository
 ```
 
-For a private GitHub repository, you have to provide an 
-[access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/):
+If an [access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) is required:
 ```shell
 lein run --organization $organization --repository $repository --token $token
 ```
