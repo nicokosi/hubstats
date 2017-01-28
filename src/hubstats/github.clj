@@ -38,17 +38,17 @@
 (defn- action [event]
   (get-in event ["payload" "action"]))
 
-(defn- pr-closed? [event]
-  (= (action event) "closed"))
-
-(defn- pr-opened? [event]
-  (= (action event) "opened"))
-
 (defn- pr-review-comment-evt? [event]
   (= "PullRequestReviewCommentEvent" (get event "type")))
 
 (defn- pr-event? [event]
   (= "PullRequestEvent" (get event "type")))
+
+(defn- closed? [event]
+  (= (action event) "closed"))
+
+(defn- opened? [event]
+  (= (action event) "opened"))
 
 (defn- created? [review-comment]
   (= (get-in review-comment ["payload" "action"]) "created"))
@@ -69,38 +69,34 @@
         date (if since-date
                (time-format/parse date-format since-date)
                (time/ago (if (> days 0) (time/days days) (time/weeks weeks))))
-        new-raw-events (filter #(created-since? % date) (events org repo token))]
+        new-raw-events (filter #(created-since? % date) (events org repo token))
+        pr-events (filter pr-event? new-raw-events)
+        pr-review-comment-events (filter pr-review-comment-evt? new-raw-events)]
     (assoc {}
       :request {:org   org
                 :repo  repo
                 :since (time-format/unparse (time-format/formatters :date-time-no-ms) date)}
       :opened {
-               :count (->> (filter pr-opened? new-raw-events)
-                           (filter #(= "opened" (get-in % ["payload" "action"])))
+               :count (->> (filter opened? pr-events)
                            count)
                :count-by-author
                       (sort-map-by-value
-                        (->> (filter pr-opened? new-raw-events)
-                             (filter #(= "opened" (get-in % ["payload" "action"])))
+                        (->> (filter opened? pr-events)
                              (map #(get-in % ["actor" "login"]))
-                             frequencies))
-               }
+                             frequencies))}
       :commented {
-                  :count (->> (filter pr-review-comment-evt? new-raw-events)
+                  :count (->> pr-review-comment-events
                               (filter created?)
                               count)
                   :count-by-author
                          (sort-map-by-value
-                           (->> (filter pr-review-comment-evt? new-raw-events)
+                           (->> pr-review-comment-events
                                 (filter created?)
                                 (map #(get-in % ["actor" "login"]))
-                                frequencies))
-                  }
-      :closed {:count (count (filter pr-closed? new-raw-events))
+                                frequencies))}
+      :closed {:count (count (filter closed? pr-events))
                :count-by-author
                       (sort-map-by-value
-                        (->> (filter pr-event? new-raw-events)
-                             (filter #(= "closed" (get-in % ["payload" "action"])))
+                        (->> (filter closed? pr-events)
                              (map #(get-in % ["actor" "login"]))
-                             frequencies))}
-      )))
+                             frequencies))})))
