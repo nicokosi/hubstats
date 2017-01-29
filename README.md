@@ -25,10 +25,10 @@ Output example:
 lein run --organization softwarevidal --repository arthur --token $token
 pull requests for softwarevidal/arthur ->
 	since 1 week(s):
-		9 opened / 56 commented / 5 closed
-		opened per author: {"cmahalin" 5, "jcgay" 2, "AElMehdiVidal" 2}
-		commented per author: {"vidal-rm" 30, "jcgay" 17, "cmahalin" 9}
-		closed per author: {"cmahalin" 2, "AElMehdiVidal" 2, "jprudent" 1}
+		10 opened / 90 comments / 14 closed
+		opened per author: {"jprudent" 4, "cmahalin" 4, "omabrouki" 1, "AElMehdiVidal" 1}
+		comments per author: {"vidal-rm" 68, "jcgay" 11, "nicokosi" 3, "jprudent" 3, "AElMehdiVidal" 3, "omabrouki" 2}
+		closed per author: {"cmahalin" 7, "nicokosi" 3, "jcgay" 2, "jprudent" 1, "AElMehdiVidal" 1}
 ```
 
 List of all parameters:

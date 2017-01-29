@@ -84,7 +84,7 @@
                         (->> (filter opened? pr-events)
                              (map #(get-in % ["actor" "login"]))
                              frequencies))}
-      :commented {
+      :comments {
                   :count (->> pr-review-comment-events
                               (filter created?)
                               count)

@@ -25,7 +25,7 @@
                            :count           3
                            :count-by-author (array-map "bob" 2 "carol" 1)
                            }
-               :commented {
+               :comments {
                            :count           1
                            :count-by-author {"carol" 1}
                            }
@@ -48,7 +48,7 @@
                          :count           0
                          :count-by-author {}
                          }
-             :commented {
+             :comments {
                          :count           0
                          :count-by-author {}
                          }

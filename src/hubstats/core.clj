@@ -40,8 +40,8 @@
                                                            (str weeks " week(s):")))))
       (println (str "\t\t"
                     (get-in pr-stats [:opened :count]) " opened / "
-                    (get-in pr-stats [:commented :count]) " commented / "
+                    (get-in pr-stats [:comments :count]) " comments / "
                     (get-in pr-stats [:closed :count]) " closed"))
       (println (str "\t\topened per author: " (get-in pr-stats [:opened :count-by-author])))
-      (println (str "\t\tcommented per author: " (get-in pr-stats [:commented :count-by-author])))
+      (println (str "\t\tcomments per author: " (get-in pr-stats [:comments :count-by-author])))
       (println (str "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author]))))))
