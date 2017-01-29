@@ -85,15 +85,22 @@
                              (map #(get-in % ["actor" "login"]))
                              frequencies))}
       :comments {
-                  :count (->> pr-review-comment-events
-                              (filter created?)
-                              count)
-                  :count-by-author
-                         (sort-map-by-value
-                           (->> pr-review-comment-events
-                                (filter created?)
-                                (map #(get-in % ["actor" "login"]))
-                                frequencies))}
+                 :count (->> pr-review-comment-events
+                             (filter created?)
+                             count)
+                 :count-by-author
+                        (sort-map-by-value
+                          (->> pr-review-comment-events
+                               (filter created?)
+                               (map #(get-in % ["actor" "login"]))
+                               frequencies))}
+      :commented {
+                  :count
+                  (->> pr-review-comment-events
+                       (filter created?)
+                       (map #(get-in % ["payload" "pull_request" "id"]))
+                       set
+                       count)}
       :closed {:count (count (filter closed? pr-events))
                :count-by-author
                       (sort-map-by-value

@@ -22,13 +22,12 @@ lein run --organization $organization --repository $repository --token $token
 Output example:
 
 ```shell
-lein run --organization softwarevidal --repository arthur --token $token
 pull requests for softwarevidal/arthur ->
-	since 1 week(s):
-		10 opened / 90 comments / 14 closed
-		opened per author: {"jprudent" 4, "cmahalin" 4, "omabrouki" 1, "AElMehdiVidal" 1}
-		comments per author: {"vidal-rm" 68, "jcgay" 11, "nicokosi" 3, "jprudent" 3, "AElMehdiVidal" 3, "omabrouki" 2}
-		closed per author: {"cmahalin" 7, "nicokosi" 3, "jcgay" 2, "jprudent" 1, "AElMehdiVidal" 1}
+        since 1 week(s):
+                10 opened / 14 closed / 10 commented (90 comments)
+                opened per author: {"jprudent" 4, "cmahalin" 4, "omabrouki" 1, "AElMehdiVidal" 1}
+                comments per author: {"vidal-rm" 68, "jcgay" 11, "nicokosi" 3, "jprudent" 3, "AElMehdiVidal" 3, "omabrouki" 2}
+                closed per author: {"cmahalin" 7, "nicokosi" 3, "jcgay" 2, "jprudent" 1, "AElMehdiVidal" 1}
 ```
 
 List of all parameters:
