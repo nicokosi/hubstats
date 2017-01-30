@@ -58,7 +58,7 @@ lein uberjar
 ```
 Then launch (note that Java is required):
 ```shell
-java -jar /home/nkosinski/perso/hubstats/target/hubstats-*-standalone.jar
+java -jar target/hubstats-*-standalone.jar
 ```
 
 On Unix-like systems, you can create an executable via the following command:
