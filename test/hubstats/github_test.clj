@@ -16,7 +16,7 @@
       (with-redefs
         [github-api-events read-json]
         (is (=
-              (pr-stats {:org "myorg" :repo "myrepo" :since "2016-12-04T00:00:00Z"})
+              (pr-stats {:org "myorg" :all-repos ["myrepo"] :since "2016-12-04T00:00:00Z"} "myrepo")
               {
                :request   {:org   "myorg"
                            :repo  "myrepo"
@@ -42,7 +42,7 @@
     (with-redefs
       [github-api-events (fn [_ _ _ _] (json/read-str "{}"))]
       (is (=
-            (pr-stats {:org "myorg" :repo "myrepo" :since "2016-12-04T00:00:00Z"})
+            (pr-stats {:org "myorg" :all-repos ["myrepo"] :since "2016-12-04T00:00:00Z"} "myrepo")
             {
              :request   {:org   "myorg"
                          :repo  "myrepo"

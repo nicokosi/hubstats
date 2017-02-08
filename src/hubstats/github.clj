@@ -59,9 +59,8 @@
                                   [(get m key1) key1])))
         m))
 
-(defn pr-stats [opts]
+(defn pr-stats [opts repo]
   (let [org (opts :org)
-        repo (opts :repo)
         token (opts :token)
         since-date (get opts :since nil)
         days (Integer/parseInt (get opts :days "0"))

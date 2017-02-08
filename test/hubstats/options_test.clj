@@ -5,52 +5,55 @@
 (deftest ^:unit-test options-tests
   (testing "Options with long names"
     (is (=
-          {:repo "1" :org "2" :token "3" :weeks "4"}
-          (options "--repository 1 --organization 2 --token 3 --since-weeks 4")))
+          {:org "o" :all-repos ["r"] :token "t" :weeks "4"}
+          (options "--organization o --repository r --token t --since-weeks 4")))
     (is (=
-          {:repo "1" :org "2" :token "3" :days "4"}
-          (options "--repository 1 --organization 2 --token 3 --since-days 4")))
+          {:org "o" :all-repos ["r"] :token "t" :days "4"}
+          (options "--organization o --repository r --token t --since-days 4")))
     (is (=
-          {:repo "1" :org "2" :token "3" :since "2014"}
-          (options "--repository 1 --organization 2 --token 3 --since 2014")))
+          {:org "o" :all-repos ["r"] :token "t" :since "2014"}
+          (options "--organization o --repository r --token t --since 2014")))
     (is (=
-          {:repo "1" :org "2" :token "3"}
-          (options "--repository 1 --organization 2 --token 3")))
+          {:org "o" :all-repos ["r"] :token "t"}
+          (options "--repository r --organization o --token t")))
     (is (=
-          {:repo "1" :org "2" :token "3"}
-          (options "--organization 2 --token 3 --repository 1")))
+          {:org "o" :all-repos ["r"] :token "t"}
+          (options "--organization o --token t --repository r")))
     (is (=
-          {:repo "1" :org "2"}
-          (options "--organization 2 --repository 1")))
+          {:org "o" :all-repos ["r"]}
+          (options "--organization o --repository r")))
     (is (=
-          {:repo "1" :org "2"}
-          (options "--repository 1 --organization 2"))))
+          {:org "o" :all-repos ["r1" "r2"]}
+          (options "--organization o --repositories r1,r2")))
+    (is (=
+          {:org "o" :all-repos ["r"]}
+          (options "--organization o --repositories r"))))
   (testing "Options with short names"
     (is (=
-          {:repo "1" :org "2" :token "3" :since "4"}
-          (options "-r 1 -o 2 -t 3 -s 4")))
+          {:org "o" :all-repos ["r"] :token "t" :weeks "4"}
+          (options "-o o -r r -t t -w 4")))
     (is (=
-          {:repo "1" :org "2" :token "3" :days "4"}
-          (options "-r 1 -o 2 -t 3 -d 4")))
+          {:org "o" :all-repos ["r"] :token "t" :days "4"}
+          (options "-o o -r r -t t -d 4")))
     (is (=
-          {:repo "1" :org "2" :token "3" :weeks "4"}
-          (options "-r 1 -o 2 -t 3 -w 4")))
+          {:org "o" :all-repos ["r"] :token "t" :since "2014"}
+          (options "-o o -r r -t t -s 2014")))
     (is (=
-          {:repo "1" :org "2" :token "3"}
-          (options "-r 1 -o 2 -t 3")))
+          {:org "o" :all-repos ["r"] :token "t"}
+          (options "-r r -o o -t t")))
     (is (=
-          {:repo "1" :org "2" :token "3"}
-          (options "-o 2 -t 3 -r 1")))
+          {:org "o" :all-repos ["r"] :token "t"}
+          (options "-o o -t t -r r")))
     (is (=
-          {:repo "1" :org "2"}
-          (options "-o 2 -r 1")))
+          {:org "o" :all-repos ["r"]}
+          (options "-o o -r r")))
     (is (=
-          {:repo "1" :org "2"}
-          (options "-r 1 -o 2"))))
+          {:org "o" :all-repos ["r"]}
+          (options "-o o -r r"))))
   (testing "Invalid options"
     (is (=
           {:errors [:missing-org :missing-repo]}
           (options "")))
     (is (=
           {:errors [:several-since]}
-          (options "--repository 1 --organization 2 --token 3 --since 2016-11-01T00:00:00Z --since-days 4 --since-weeks 5")))))
+          (options "--repository r --organization o --token t --since 2016-11-01T00:00:00Z --since-days 4 --since-weeks 5")))))
