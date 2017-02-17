@@ -2,7 +2,8 @@
   (:gen-class)
   (:require
     [hubstats.github :as github]
-    [hubstats.options :as opts]))
+    [hubstats.options :as opts]
+    [clojure.core.async :refer [chan, go, <!, <!!, >!]]))
 
 (defn- quit [err-message]
   (println "Display statistics for GitHub pull requests.")
@@ -30,28 +31,35 @@
   (if err-message (.println System/err err-message))
   (System/exit -1))
 
+(defn display-stats [repo pr-stats]
+  (println
+    (str
+      "pull requests for " (get-in pr-stats [:request :org]) "/" repo " ->\n"
+      "\tsince " (get-in pr-stats [:request :since]) "\n"
+      "\t\t" (get-in pr-stats [:opened :count]) " opened"
+      " / " (get-in pr-stats [:closed :count]) " closed"
+      " / " (get-in pr-stats [:commented :count]) " commented"
+      " (" (get-in pr-stats [:comments :count]) " comments)") "\n"
+      "\t\topened per author: " (get-in pr-stats [:opened :count-by-author]) "\n"
+      "\t\tcomments per author: " (get-in pr-stats [:comments :count-by-author]) "\n"
+      "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author])))
+
 (defn -main [& args]
   (let [opts (opts/options (clojure.string/join " " args))]
     (if (empty? args) (quit nil))
     (if (some #(= % :missing-org) (opts :errors)) (quit "Missing organization"))
     (if (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))
     (if (some #(= % :several-since) (opts :errors)) (quit "Only one 'since' option is possible"))
-    (let
-      [since-date (get opts :since nil)
-       days (Integer/parseInt (get opts :days "0"))
-       weeks (Integer/parseInt (get opts :weeks "1"))]
-      (doseq [repo (:all-repos opts)]
-        (let [pr-stats (github/pr-stats opts repo)]
-          (println (str "pull requests for " (get-in pr-stats [:request :org]) "/" repo " ->"))
-          (println (str "\tsince " (if since-date since-date (if (> days 0)
-                                                               (str days " day(s):")
-                                                               (str weeks " week(s):")))))
-          (println (str "\t\t"
-                        (get-in pr-stats [:opened :count]) " opened"
-                        " / " (get-in pr-stats [:closed :count]) " closed"
-                        " / " (get-in pr-stats [:commented :count]) " commented"
-                        " (" (get-in pr-stats [:comments :count]) " comments)"))
 
-          (println (str "\t\topened per author: " (get-in pr-stats [:opened :count-by-author])))
-          (println (str "\t\tcomments per author: " (get-in pr-stats [:comments :count-by-author])))
-          (println (str "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author]))))))))
+      (let [c (chan)]
+        (doseq [repo (:all-repos opts)]
+          (go
+            (>! c {:repo repo, :pr-stats (github/pr-stats opts repo)})))
+
+        (<!!
+          (go
+            (doseq [_ (:all-repos opts)]
+              (let [stats-and-repo (<! c)
+                    pr-stats (:pr-stats stats-and-repo)
+                    repo (:repo stats-and-repo)]
+                (display-stats repo pr-stats))))))))
