@@ -81,6 +81,7 @@ This executable, which requires Java, can be moved to `/usr/local/bin`, for exam
 Run:
 ```shell
 lein uberjar
+unzip target/hubstats-0.1.0-SNAPSHOT-standalone.jar -d target/clazz
 docker build . -t hubstats
 docker run --rm -it hubstats
 docker inspect hubstats | jq .[0].Size
