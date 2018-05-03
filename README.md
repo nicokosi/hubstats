@@ -81,8 +81,20 @@ This executable, which requires Java, can be moved to `/usr/local/bin`, for exam
 Run:
 ```shell
 lein uberjar
-unzip target/hubstats-0.1.0-SNAPSHOT-standalone.jar -d target/clazz
+
+for archive in \
+  clojure/1.9.0/clojure-1.9.0.jar \
+  core.specs.alpha/0.1.24/core.specs.alpha-0.1.24.jar \
+  spec.alpha/0.1.143/spec.alpha-0.1.143.jar; do
+  (
+    cd target/classes && \
+    jar xf ~/.m2/repository/org/clojure/$archive
+  )
+done
+
 docker build . -t hubstats
+
 docker run --rm -it hubstats
+
 docker inspect hubstats | jq .[0].Size
 ```

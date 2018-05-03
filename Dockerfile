@@ -1,6 +1,6 @@
 FROM danny02/graalvm
 
-COPY target/clazz /target
+COPY target/classes /target
 WORKDIR /target
 RUN native-image hubstats.core
 
