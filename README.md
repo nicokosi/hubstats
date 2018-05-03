@@ -59,6 +59,8 @@ Examples:
 
 ## Command line installation
 
+### Standard installation (via any Java VM)
+
 Create JAR with all dependencies:
 ```shell
 lein uberjar
@@ -74,3 +76,12 @@ On Unix-like systems, you can create an executable via the following command:
 ```
 This executable, which requires Java, can be moved to `/usr/local/bin`, for example.
 
+### Experimental installation (via GraalVM)
+
+Run:
+```shell
+lein uberjar
+docker build . -t hubstats
+docker run --rm -it hubstats
+docker inspect hubstats | jq .[0].Size
+```
