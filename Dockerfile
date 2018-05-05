@@ -2,7 +2,7 @@ FROM danny02/graalvm
 
 WORKDIR /hubstats
 
-COPY /tmp/hubstats/classes .
+COPY tmp/hubstats/classes .
 RUN native-image hubstats.core
 
 FROM scratch

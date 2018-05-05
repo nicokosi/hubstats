@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TEMP_DIR="/tmp/hubstats"
+TEMP_DIR="tmp/hubstats"
 
 cleanup() {
    if [ -e ${TEMP_DIR} ]; then
