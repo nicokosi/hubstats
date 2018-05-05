@@ -78,4 +78,4 @@ This executable, which requires Java, can be moved to `/usr/local/bin`, for exam
 
 ### Experimental installation (via GraalVM)
 
-Run `experimental-build.sh`.
+Run `lein uberjar` then `./experimental-build.sh`.

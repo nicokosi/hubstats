@@ -10,11 +10,6 @@ cleanup() {
 }
 trap cleanup INT TERM EXIT
 
-lein uberjar
-
-set -e
-rm -rf ${TEMP_DIR}
-set +e
 mkdir -p ${TEMP_DIR}/classes
 unzip -q target/hubstats-*-standalone.jar -d ${TEMP_DIR}/classes
 

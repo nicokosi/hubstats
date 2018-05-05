@@ -2,9 +2,8 @@ FROM danny02/graalvm
 
 WORKDIR /hubstats
 
-COPY tmp/classes target
-RUN cd target \
- && native-image hubstats.core
+COPY /tmp/hubstats/classes .
+RUN native-image hubstats.core
 
 FROM scratch
 
@@ -17,6 +16,6 @@ COPY --from=BASE /lib64/libcrypt.so.1 /lib64/libcrypt.so.1
 COPY --from=BASE /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
 COPY --from=BASE /lib64/libfreebl3.so /lib64/libfreebl3.so
 
-COPY --from=BASE target/hubstats.core /
+COPY --from=BASE hubstats.core /
 
 CMD ["/hubstats.core"]
