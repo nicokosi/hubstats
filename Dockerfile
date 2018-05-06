@@ -2,8 +2,11 @@ FROM danny02/graalvm
 
 WORKDIR /hubstats
 
-COPY tmp/hubstats/classes .
-RUN native-image hubstats.core
+COPY target/hubstats-0.1.0-SNAPSHOT-standalone.jar .
+RUN native-image \
+  -jar hubstats-0.1.0-SNAPSHOT-standalone.jar \
+  -H:+ReportUnsupportedElementsAtRuntime \
+  hubstats.core
 
 FROM scratch
 
