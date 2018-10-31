@@ -1,19 +1,14 @@
 (ns hubstats.github
-  (:require
-    [clojure.data.json :as json]
-    [clj-time.core :as time]
-    [clj-time.format :as time-format]
-    [clj-http.client :as http-client]
-    [slingshot.slingshot :refer [try+]]))
+)
 
-(def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
+#_(def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 
-(defn github-api-events [org repo token page]
+#_(defn github-api-events [org repo token page]
   (let [url (str "https://api.github.com/repos/" org "/" repo "/events?access_token=" token "&page=" page)]
     (json/read-str
       ((http-client/get url {"Accept" "application/vnd.github.v3+json"}) :body))))
 
-(defn events
+#_(defn events
   ([org repo token page]
    (when (< page 100)
      (try+
@@ -27,39 +22,39 @@
   ([org repo token]
    (events org repo token 1 [])))
 
-(defn- since? [map key date]
+#_(defn- since? [map key date]
   (time/after?
     (time-format/parse date-format (get map key))
     date))
 
-(defn- created-since? [event date]
+#_(defn- created-since? [event date]
   (since? event "created_at" date))
 
-(defn- action [event]
+#_(defn- action [event]
   (get-in event ["payload" "action"]))
 
-(defn- pr-review-comment-evt? [event]
+#_(defn- pr-review-comment-evt? [event]
   (= "PullRequestReviewCommentEvent" (get event "type")))
 
-(defn- pr-event? [event]
+#_(defn- pr-event? [event]
   (= "PullRequestEvent" (get event "type")))
 
-(defn- closed? [event]
+#_(defn- closed? [event]
   (= (action event) "closed"))
 
-(defn- opened? [event]
+#_(defn- opened? [event]
   (= (action event) "opened"))
 
-(defn- created? [review-comment]
+#_(defn- created? [review-comment]
   (= (get-in review-comment ["payload" "action"]) "created"))
 
-(defn- sort-map-by-value [m]
+#_(defn- sort-map-by-value [m]
   (into (sorted-map-by (fn [key1 key2]
                          (compare [(get m key2) key2]
                                   [(get m key1) key1])))
         m))
 
-(defn pr-stats [opts repo]
+#_(defn pr-stats [opts repo]
   (let [org (opts :org)
         token (opts :token)
         since-date (get opts :since nil)

@@ -3,7 +3,7 @@
   (:require
     [hubstats.github :as github]
     [hubstats.options :as opts]
-    [clojure.core.async :refer [chan, go, <!, <!!, >!]]))
+    #_[clojure.core.async :refer [chan, go, <!, <!!, >!]]))
 
 (defn- quit [err-message]
   (println "Display statistics for GitHub pull requests.")
@@ -51,7 +51,7 @@
     (if (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))
     (if (some #(= % :several-since) (opts :errors)) (quit "Only one 'since' option is possible"))
 
-      (let [c (chan)]
+      #_(let [c (chan)]
         (doseq [repo (:all-repos opts)]
           (go
             (>! c {:repo repo, :pr-stats (github/pr-stats opts repo)})))
