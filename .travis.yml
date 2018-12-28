@@ -3,4 +3,4 @@ language: clojure
 lein: 2.8.1
 
 jdk:
-  - oraclejdk8
+  - openjdk11
