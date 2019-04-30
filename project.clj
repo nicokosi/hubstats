@@ -6,9 +6,9 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.10.0"],
                  [org.clojure/data.json "0.2.6"],
-                 [clj-http "3.7.0"],
+                 [clj-http "3.9.1"],
                  [slingshot "0.12.2"],
-                 [clj-time "0.14.2"],
-                 [org.clojure/core.async "0.4.474"]]
+                 [clj-time "0.15.1"],
+                 [org.clojure/core.async "0.4.490"]]
   :main ^:skip-aot hubstats.core
   :profiles {:uberjar {:aot :all}})
