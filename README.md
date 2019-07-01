@@ -59,6 +59,8 @@ Examples:
 
 ## Command line installation
 
+### As a Java application (portable)
+
 Create JAR with all dependencies:
 ```shell
 lein uberjar
@@ -74,3 +76,6 @@ On Unix-like systems, you can create an executable via the following command:
 ```
 This executable, which requires Java, can be moved to `/usr/local/bin`, for example.
 
+### As a *nix native executable
+
+Create a native executable via GraalVM running `./generate-executable.sh`. Only works for Linux and macOS.
