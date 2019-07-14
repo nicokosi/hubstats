@@ -1,10 +1,10 @@
 (ns hubstats.github
-  (:require
-    [clojure.data.json :as json]
-    [clj-time.core :as time]
-    [clj-time.format :as time-format]
-    [clj-http.client :as http-client]
-    [slingshot.slingshot :refer [try+]]))
+    (:require
+      [clojure.data.json :as json]
+      [clj-time.core :as time]
+      [clj-time.format :as time-format]
+      [clj-http.lite.client :as http-client]
+      [slingshot.slingshot :refer [try+]]))
 
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 

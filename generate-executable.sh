@@ -17,7 +17,7 @@ echo "Build executable from JAR via GraalVM:"
 gu install native-image && \
 native-image \
     --allow-incomplete-classpath \
-    --force-fallback \
+    --no-fallback \
     --initialize-at-build-time \
     --no-server \
     --report-unsupported-elements-at-runtime \
