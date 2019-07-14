@@ -5,8 +5,7 @@ hubstats [![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=mas
 
 ## Prerequisite
 
-[Install leiningen](http://leiningen.org/#install).
-
+[Install leiningen](http://leiningen.org/#install) and run it on Java 8.
 
 ## Usage
 
