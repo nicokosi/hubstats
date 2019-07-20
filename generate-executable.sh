@@ -17,11 +17,12 @@ echo "Build executable from JAR via GraalVM:"
 gu install native-image && \
 native-image \
     --allow-incomplete-classpath \
-    --no-fallback \
+    --force-fallback \
     --initialize-at-build-time \
     --no-server \
     --report-unsupported-elements-at-runtime \
     -Dclojure.compiler.direct-linking=true \
+    -H:EnableURLProtocols=https \
     -H:+ReportExceptionStackTraces \
     -jar ./target/hubstats-0.1.0-SNAPSHOT-standalone.jar \
     hubstats
