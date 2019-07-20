@@ -24,14 +24,14 @@ native-image \
     -Dclojure.compiler.direct-linking=true \
     -H:+ReportExceptionStackTraces \
     -jar ./target/hubstats-0.1.0-SNAPSHOT-standalone.jar \
-    hubstats.core
+    hubstats
 
 echo "Executable has been built! ✅
 
 It can be run this way:
 
  # Show last 10 days stats for GitHub repository docker/containerd:
- $ ./hubstats.core --organization docker --repository containerd --since-days 10
+ $ ./hubstats --organization docker --repository containerd --since-days 10
 
  # Show all parameters:
- $ ./hubstats.core"
+ $ ./hubstats"
