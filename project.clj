@@ -8,8 +8,8 @@
                  [org.clojure/data.json "0.2.6"],
                  [clj-http-lite "0.3.0"],
                  [slingshot "0.12.2"],
-                 [clj-time "0.15.1"],
-                 [org.clojure/core.async "0.4.490"]]
+                 [clj-time "0.15.2"],
+                 [org.clojure/core.async "0.4.500"]]
   :main ^:skip-aot hubstats.core
   :plugins [[lein-ancient "0.6.15"]]
   :profiles {:uberjar {:aot :all}})
