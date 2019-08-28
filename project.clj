@@ -11,4 +11,5 @@
                  [clj-time "0.15.1"],
                  [org.clojure/core.async "0.4.490"]]
   :main ^:skip-aot hubstats.core
+  :plugins [[lein-ancient "0.6.15"]]
   :profiles {:uberjar {:aot :all}})

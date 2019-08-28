@@ -78,3 +78,30 @@ This executable, which requires Java, can be moved to `/usr/local/bin`, for exam
 ### As a *nix native executable
 
 Create a native executable via GraalVM running `./generate-executable.sh`. Only works for Linux and macOS.
+
+## Developer tasks
+
+### Run tests
+
+```shell
+lein test
+```
+
+### Display dependencies
+
+As a tree:
+```shell
+lein deps :tree-data
+```
+
+Display outdated dependencies:
+```shell
+lein ancient
+```
+
+### Upgrade dependencies
+
+Upgrade:
+```shell
+lein ancient upgrade
+```
