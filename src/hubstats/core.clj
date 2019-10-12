@@ -28,7 +28,7 @@
   (println "\tlein run --organization docker --repository containerd --since \"2017-01-17T00:00:00Z\"")
   (println "\tlein run --organization docker --repository containerd --since-days 10")
   (println "\tlein run --organization docker --repositories docker,containerd")
-  (if err-message (.println System/err err-message))
+  (when err-message (.println System/err err-message))
   (System/exit -1))
 
 (defn display-stats [repo pr-stats]
@@ -46,10 +46,10 @@
 
 (defn -main [& args]
   (let [opts (opts/options (clojure.string/join " " args))]
-    (if (empty? args) (quit nil))
-    (if (some #(= % :missing-org) (opts :errors)) (quit "Missing organization"))
-    (if (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))
-    (if (some #(= % :several-since) (opts :errors)) (quit "Only one 'since' option is possible"))
+    (when (empty? args) (quit nil))
+    (when (some #(= % :missing-org) (opts :errors)) (quit "Missing organization"))
+    (when (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))
+    (when (some #(= % :several-since) (opts :errors)) (quit "Only one 'since' option is possible"))
 
       (let [c (chan)]
         (doseq [repo (:all-repos opts)]
