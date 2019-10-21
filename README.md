@@ -87,6 +87,16 @@ Create a native executable via GraalVM running `./generate-executable.sh`. Only 
 lein test
 ```
 
+### Run the code linter
+
+[Install `clj-kondo`](https://github.com/borkdude/clj-kondo/blob/master/doc/install.md), then run:
+
+```shell
+clj-kondo --lint src
+```
+
+It can help tidy the code.
+
 ### Display dependencies
 
 As a tree:
