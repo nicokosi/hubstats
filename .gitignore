@@ -4,5 +4,6 @@
 /.nrepl-port
 *.iml
 /lib
+.clj-kondo/
 .idea
-/hubstats
+hubstats
