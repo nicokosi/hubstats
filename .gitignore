@@ -6,4 +6,5 @@
 /lib
 .clj-kondo/
 .idea
+.vscode
 hubstats
