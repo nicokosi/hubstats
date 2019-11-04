@@ -23,4 +23,4 @@
 
           (-main "-o org -r repo")
 
-          (is (clojure.string/starts-with? *out* "pull requests for org/repo")))))))
+          (is (starts-with? *out* "pull requests for org/repo")))))))

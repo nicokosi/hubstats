@@ -1,6 +1,6 @@
 (ns hubstats.options-test
-  (:require [clojure.test :refer :all]
-            [hubstats.options :refer :all]))
+  (:require [clojure.test :refer [deftest, is, testing]]
+            [hubstats.options :refer [options]]))
 
 (deftest ^:unit-test options-tests
   (testing "Options with long names"

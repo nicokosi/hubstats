@@ -1,7 +1,7 @@
 (ns hubstats.github-test
   (:require
     [clojure.java.io :as io]
-    [clojure.test :refer :all]
+    [clojure.test :refer [deftest, is, testing]]
     [hubstats.github :refer [github-api-events pr-stats]]
     [clojure.data.json :as json]))
 
