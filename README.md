@@ -1,5 +1,4 @@
-hubstats [![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=master)](https://travis-ci.org/nicokosi/hubstats)
-============================
+# hubstats [![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=master)](https://travis-ci.org/nicokosi/hubstats)
 
 `hubstats` is a command line tool to compute statistics for GitHub pull requests.
 
@@ -14,6 +13,7 @@ lein run --organization $organization --repository $repository
 ```
 
 If an [access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) is required:
+
 ```shell
 lein run --organization $organization --repository $repository --token $token
 ```
@@ -30,6 +30,7 @@ pull requests for softwarevidal/arthur ->
 ```
 
 List of all parameters:
+
 ```shell
 lein run
 Display statistics for GitHub pull requests.
@@ -61,18 +62,23 @@ Examples:
 ### As a Java application (portable)
 
 Create JAR with all dependencies:
+
 ```shell
 lein uberjar
 ```
+
 Then launch (note that Java is required):
+
 ```shell
 java -jar target/hubstats-*-standalone.jar
 ```
 
 On Unix-like systems, you can create an executable via the following command:
+
 ```shell
 ./make-exec.sh hubstats
 ```
+
 This executable, which requires Java, can be moved to `/usr/local/bin`, for example.
 
 ### As a *nix native executable
@@ -100,11 +106,13 @@ It can help tidy the code.
 ### Display dependencies
 
 As a tree:
+
 ```shell
 lein deps :tree-data
 ```
 
 Display outdated dependencies:
+
 ```shell
 lein ancient
 ```
@@ -112,6 +120,7 @@ lein ancient
 ### Upgrade dependencies
 
 Upgrade:
+
 ```shell
 lein ancient upgrade
 ```
