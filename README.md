@@ -92,7 +92,7 @@ lein test
 [Install `clj-kondo`](https://github.com/borkdude/clj-kondo/blob/master/doc/install.md), then run:
 
 ```shell
-clj-kondo --lint src
+clj-kondo --lint .
 ```
 
 It can help tidy the code.
