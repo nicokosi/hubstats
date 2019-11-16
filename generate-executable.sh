@@ -11,9 +11,10 @@ curl --silent "https://get.sdkman.io" | bash || echo 'SDKMAN! already installed'
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 GRAALVM_VERSION=19.2.1-grl
 
-sdkman_auto_answer=true
-sdkman_auto_selfupdate=true
-sdk install java $GRAALVM_VERSION > /dev/null
+sdkman_auto_answer=true \
+    sdkman_auto_selfupdate=tr \
+    sdk install java $GRAALVM_VERSION > /dev/null \
+    || echo "GraalVM $GRAALVM_VERSION already installed."
 sdk use java $GRAALVM_VERSION
 
 echo "Build executable from JAR via GraalVM:"
