@@ -12,7 +12,10 @@
 (defn github-api-events [org repo token page]
   (let [url (str "https://api.github.com/repos/" org "/" repo "/events?access_token=" token "&page=" page)]
     (json/read-str
-      ((http-client/get url {"Accept" "application/vnd.github.v3+json"}) :body))))
+      ((http-client/get url {
+                             "Authorization" token
+                             "Accept" "application/vnd.github.v3+json"})
+       :body))))
 
 (defn events
   ([org repo token page]
