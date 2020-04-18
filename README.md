@@ -4,7 +4,7 @@
 
 ## Prerequisite
 
-[Install leiningen](http://leiningen.org/#install) and run it on Java 8.
+[Install leiningen](http://leiningen.org/#install) and run it on Java 8+.
 
 ## Usage
 
