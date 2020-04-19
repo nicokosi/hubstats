@@ -9,7 +9,8 @@
                  [clj-http "2.3.0"],
                  [slingshot "0.12.2"],
                  [clj-time "0.15.2"],
-                 [org.clojure/core.async "0.4.500"]]
+                 [org.clojure/core.async "0.4.500"]
+                 [com.walmartlabs/lacinia "0.21.0"]]
   :main ^:skip-aot hubstats.core
   :plugins [[lein-ancient "0.6.15"]]
   :profiles {:uberjar {:aot :all}})
