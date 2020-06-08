@@ -3,6 +3,7 @@
   (:require
    [hubstats.github :as github]
    [hubstats.options :as opts]
+   [clojure.string :as string]
    [clojure.core.async :refer [chan, go, <!, <!!, >!]]))
 
 (defn- quit [err-message]
@@ -45,7 +46,7 @@
    "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author])))
 
 (defn -main [& args]
-  (let [opts (opts/options (clojure.string/join " " args))]
+  (let [opts (opts/options (string/join " " args))]
     (when (empty? args) (quit nil))
     (when (some #(= % :missing-org) (opts :errors)) (quit "Missing organization"))
     (when (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))

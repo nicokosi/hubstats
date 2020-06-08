@@ -6,7 +6,7 @@
    [hubstats.core :refer [-main]]
    [hubstats.github :refer [github-api-events]]
    [clojure.data.json :as json])
-  (:import (java.io FileNotFoundException StringWriter)))
+  (:import (java.io StringWriter)))
 
 (deftest ^:integration-test core-tests
 
