@@ -1,9 +1,9 @@
 (ns hubstats.core
   (:gen-class)
   (:require
-    [hubstats.github :as github]
-    [hubstats.options :as opts]
-    [clojure.core.async :refer [chan, go, <!, <!!, >!]]))
+   [hubstats.github :as github]
+   [hubstats.options :as opts]
+   [clojure.core.async :refer [chan, go, <!, <!!, >!]]))
 
 (defn- quit [err-message]
   (println "Display statistics for GitHub pull requests.")
@@ -33,16 +33,16 @@
 
 (defn display-stats [repo pr-stats]
   (println
-    (str
-      "pull requests for " (get-in pr-stats [:request :org]) "/" repo " ->\n"
-      "\tsince " (get-in pr-stats [:request :since]) "\n"
-      "\t\t" (get-in pr-stats [:opened :count]) " opened"
-      " / " (get-in pr-stats [:closed :count]) " closed"
-      " / " (get-in pr-stats [:commented :count]) " commented"
-      " (" (get-in pr-stats [:comments :count]) " comments)") "\n"
-      "\t\topened per author: " (get-in pr-stats [:opened :count-by-author]) "\n"
-      "\t\tcomments per author: " (get-in pr-stats [:comments :count-by-author]) "\n"
-      "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author])))
+   (str
+    "pull requests for " (get-in pr-stats [:request :org]) "/" repo " ->\n"
+    "\tsince " (get-in pr-stats [:request :since]) "\n"
+    "\t\t" (get-in pr-stats [:opened :count]) " opened"
+    " / " (get-in pr-stats [:closed :count]) " closed"
+    " / " (get-in pr-stats [:commented :count]) " commented"
+    " (" (get-in pr-stats [:comments :count]) " comments)") "\n"
+   "\t\topened per author: " (get-in pr-stats [:opened :count-by-author]) "\n"
+   "\t\tcomments per author: " (get-in pr-stats [:comments :count-by-author]) "\n"
+   "\t\tclosed per author: " (get-in pr-stats [:closed :count-by-author])))
 
 (defn -main [& args]
   (let [opts (opts/options (clojure.string/join " " args))]
@@ -51,15 +51,15 @@
     (when (some #(= % :missing-repo) (opts :errors)) (quit "Missing repository"))
     (when (some #(= % :several-since) (opts :errors)) (quit "Only one 'since' option is possible"))
 
-      (let [c (chan)]
-        (doseq [repo (:all-repos opts)]
-          (go
-            (>! c {:repo repo, :pr-stats (github/pr-stats opts repo)})))
+    (let [c (chan)]
+      (doseq [repo (:all-repos opts)]
+        (go
+          (>! c {:repo repo, :pr-stats (github/pr-stats opts repo)})))
 
-        (<!!
-          (go
-            (doseq [_ (:all-repos opts)]
-              (let [stats-and-repo (<! c)
-                    pr-stats (:pr-stats stats-and-repo)
-                    repo (:repo stats-and-repo)]
-                (display-stats repo pr-stats))))))))
+      (<!!
+       (go
+         (doseq [_ (:all-repos opts)]
+           (let [stats-and-repo (<! c)
+                 pr-stats (:pr-stats stats-and-repo)
+                 repo (:repo stats-and-repo)]
+             (display-stats repo pr-stats))))))))
