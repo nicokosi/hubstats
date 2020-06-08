@@ -4,3 +4,10 @@ lein: 2.9.1
 
 jdk:
   - openjdk11
+
+jobs:
+  include:
+    - stage: lint
+      script: lein cljfmt check
+    - stage: test
+      script: lein test
