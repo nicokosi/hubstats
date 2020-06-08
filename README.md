@@ -101,7 +101,19 @@ lein test
 clj-kondo --lint .
 ```
 
-It can help tidy the code.
+### Format the code
+
+Check:
+
+```shell
+lein cljfmt check
+```
+
+Format:
+
+```shell
+lein cljfmt fix
+```
 
 ### Display dependencies
 
