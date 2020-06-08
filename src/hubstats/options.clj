@@ -11,27 +11,27 @@
     {:errors [:missing-org :missing-repo]}
     (let [option-map (apply array-map (clojure.string/split args #" "))
           filtered (select-keys
-                     option-map
-                     ["--repository" "--repositories" "--organization" "--token" "--since-days" "--since-weeks" "--since"
-                      "-o" "-r" "-t" "-d" "-w" "-s"])
+                    option-map
+                    ["--repository" "--repositories" "--organization" "--token" "--since-days" "--since-weeks" "--since"
+                     "-o" "-r" "-t" "-d" "-w" "-s"])
           with-keywords (clojure.set/rename-keys
-                          filtered
-                          {"--repository"   :repo
-                           "-r"             :repo
-                           "--repositories" :repos
-                           "--organization" :org
-                           "-o"             :org
-                           "--token"        :token
-                           "-t"             :token
-                           "--since-days"   :days
-                           "-d"             :days
-                           "--since-weeks"  :weeks
-                           "-w"             :weeks
-                           "--since"        :since
-                           "-s"             :since})
+                         filtered
+                         {"--repository"   :repo
+                          "-r"             :repo
+                          "--repositories" :repos
+                          "--organization" :org
+                          "-o"             :org
+                          "--token"        :token
+                          "-t"             :token
+                          "--since-days"   :days
+                          "-d"             :days
+                          "--since-weeks"  :weeks
+                          "-w"             :weeks
+                          "--since"        :since
+                          "-s"             :since})
           with-repos (dissoc
-                       (assoc with-keywords :all-repos (repos with-keywords))
-                       :repo :repos)]
+                      (assoc with-keywords :all-repos (repos with-keywords))
+                      :repo :repos)]
 
       (if (contains? with-repos :org)
         (if (contains? with-repos :all-repos)
