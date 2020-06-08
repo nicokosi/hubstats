@@ -1,5 +1,6 @@
 (ns hubstats.options
-  (:require [clojure.set]))
+  (:require [clojure.set :as set]
+            [clojure.string :as string]))
 
 (defn- repos [map]
   (if (nil? (:repo map))
@@ -9,12 +10,12 @@
 (defn options [args]
   (if (empty? args)
     {:errors [:missing-org :missing-repo]}
-    (let [option-map (apply array-map (clojure.string/split args #" "))
+    (let [option-map (apply array-map (string/split args #" "))
           filtered (select-keys
                     option-map
                     ["--repository" "--repositories" "--organization" "--token" "--since-days" "--since-weeks" "--since"
                      "-o" "-r" "-t" "-d" "-w" "-s"])
-          with-keywords (clojure.set/rename-keys
+          with-keywords (set/rename-keys
                          filtered
                          {"--repository"   :repo
                           "-r"             :repo
