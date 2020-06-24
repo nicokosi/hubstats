@@ -7,28 +7,30 @@
    [clojure.core.async :refer [chan, go, <!, <!!, >!]]))
 
 (defn- quit [err-message]
-  (println "Display statistics for GitHub pull requests.")
-  (println "Mandatory parameters:")
-  (println "\t--organization\t\tGitHub organization")
-  (println "\t-o\t\t\tGitHub organization (shorthand)")
-  (println "\t--repository\t\tGitHub repository")
-  (println "\t-r\t\t\tGitHub repository (shorthand)")
-  (println "\t--token\t\t\tGitHub access token (optional)")
-  (println "\t-t\t\t\tGitHub access token (shorthand, optional)")
-  (println "Optional parameters:")
-  (println "\t--repositories\t\tComma-separated list of repositories (optional)")
-  (println "\t--since-weeks\t\toutput events that occcured since this number of weeks (optional, default: 1)")
-  (println "\t-w\t\t\toutput events that occcured since this number of weeks (shorthand, optional, default: 1)")
-  (println "\t--since-days\t\toutput events that occcured since this number of days (optional)")
-  (println "\t-d\t\t\toutput events that occcured since this number of days (shorthand, optional)")
-  (println "\t--since\t\t\toutput events that occcured since a date with format '\"yyyy-MM-dd'T'HH:mm:ssZ' (optional)")
-  (println "\t-s\t\t\toutput events that occcured since a date with format '\"yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)")
-  (println "")
-  (println "Examples:")
-  (println "\tlein run --organization docker --repository containerd --token $token")
-  (println "\tlein run --organization docker --repository containerd --since \"2017-01-17T00:00:00Z\"")
-  (println "\tlein run --organization docker --repository containerd --since-days 10")
-  (println "\tlein run --organization docker --repositories docker,containerd")
+  (println
+   (str
+    "Display statistics for GitHub pull requests.
+    Mandatory parameters:
+    \t--organization\t\tGitHub organization
+    \t-o\t\t\tGitHub organization (shorthand)
+    \t--repository\t\tGitHub repository
+    \t-r\t\t\tGitHub repository (shorthand)
+    \t--token\t\t\tGitHub access token (optional)
+    \t-t\t\t\tGitHub access token (shorthand, optional)
+    Optional parameters:
+    \t--repositories\t\tComma-separated list of repositories (optional)
+    \t--since-weeks\t\toutput events that occcured since this number of weeks (optional, default: 1)
+    \t-w\t\t\toutput events that occcured since this number of weeks (shorthand, optional, default: 1)
+    \t--since-days\t\toutput events that occcured since this number of days (optional)
+    \t-d\t\t\toutput events that occcured since this number of days (shorthand, optional)
+    \t--since\t\t\toutput events that occcured since a date with format 'yyyy-MM-dd'T'HH:mm:ssZ' (optional)
+    \t-s\t\t\toutput events that occcured since a date with format 'yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)
+
+    Examples:
+    \tlein run --organization docker --repository containerd --token $token
+    \tlein run --organization docker --repository containerd --since 2017-01-17T00:00:00Z
+    \tlein run --organization docker --repository containerd --since-days 10
+    \tlein run --organization docker --repositories docker,containerd"))
   (when err-message (.println System/err err-message))
   (System/exit -1))
 
