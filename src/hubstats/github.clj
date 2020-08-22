@@ -9,26 +9,26 @@
 
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 
-(defn github-api-events [org repo token page]
-  (let [url (str "https://api.github.com/repos/" org "/" repo "/events?access_token=" token "&page=" page)]
+(defn github-api-events [org repo user-and-token page]
+  (let [url (str "https://api.github.com/repos/" org "/" repo "/events?page=" page)]
     (json/read-str
-     ((http-client/get url {"Authorization" token
+     ((http-client/get url {:basic-auth user-and-token
                             "Accept" "application/vnd.github.v3+json"})
       :body))))
 
 (defn events
-  ([org repo token page]
+  ([org repo user-and-token page]
    (when (< page 100)
      (try+
-      (github-api-events org repo token page)
+      (github-api-events org repo user-and-token page)
       (catch [:status 422] {} nil))))
-  ([org repo token page acc]
-   (let [events (events org repo token page)]
+  ([org repo user-and-token page acc]
+   (let [events (events org repo user-and-token page)]
      (if (nil? events)
        acc
-       (recur org repo token (inc page) (concat acc events)))))
-  ([org repo token]
-   (events org repo token 1 [])))
+       (recur org repo user-and-token (inc page) (concat acc events)))))
+  ([org repo user-and-token]
+   (events org repo user-and-token 1 [])))
 
 (defn- since? [map key date]
   (time/after?
@@ -64,14 +64,14 @@
 
 (defn pr-stats [opts repo]
   (let [org (opts :org)
-        token (opts :token)
+        user-and-token (opts :token)
         since-date (get opts :since nil)
         days (Integer/parseInt (get opts :days "0"))
         weeks (Integer/parseInt (get opts :weeks "1"))
         date (if since-date
                (time-format/parse date-format since-date)
                (time/ago (if (> days 0) (time/days days) (time/weeks weeks))))
-        new-raw-events (filter #(created-since? % date) (events org repo token))
+        new-raw-events (filter #(created-since? % date) (events org repo user-and-token))
         pr-events (filter pr-event? new-raw-events)
         pr-review-comment-events (filter pr-review-comment-evt? new-raw-events)]
     (assoc {}

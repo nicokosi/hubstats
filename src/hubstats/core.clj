@@ -15,8 +15,8 @@
     \t-o\t\t\tGitHub organization (shorthand)
     \t--repository\t\tGitHub repository
     \t-r\t\t\tGitHub repository (shorthand)
-    \t--token\t\t\tGitHub access token (optional)
-    \t-t\t\t\tGitHub access token (shorthand, optional)
+    \t--token\t\t\tGitHub access token prefixed with GitHub user and ':', i.e 'myUser:myToken' (optional)
+    \t-t\t\t\tGitHub access token prefixed with GitHub user and ':', i.e 'myUser:myToken' (shorthand, optional)
     Optional parameters:
     \t--repositories\t\tComma-separated list of repositories (optional)
     \t--since-weeks\t\toutput events that occurred since this number of weeks (optional, default: 1)
@@ -27,7 +27,7 @@
     \t-s\t\t\toutput events that occurred since a date with format 'yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)
 
     Examples:
-    \tlein run --organization docker --repository containerd --token $token
+    \tlein run --organization docker --repository containerd --token \"$user:$token\"
     \tlein run --organization docker --repository containerd --since 2017-01-17T00:00:00Z
     \tlein run --organization docker --repository containerd --since-days 10
     \tlein run --organization docker --repositories docker,containerd"))
