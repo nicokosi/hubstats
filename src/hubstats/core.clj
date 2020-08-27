@@ -9,7 +9,7 @@
 (defn- quit [err-message]
   (println
    (str
-    "Display statistics for GitHub pull requests.
+    "Count opened/closed/commented GitHub pull requests.
     Mandatory parameters:
     \t--organization\t\tGitHub organization
     \t-o\t\t\tGitHub organization (shorthand)

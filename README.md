@@ -1,6 +1,6 @@
 # hubstats [![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=master)](https://travis-ci.org/nicokosi/hubstats)
 
-`hubstats` is a command line tool to compute statistics for GitHub pull requests.
+`hubstats` is a command line tool to count opened/closed/commented GitHub pull requests.
 
 ## Prerequisite
 
@@ -38,7 +38,7 @@ lein run
 will output:
 
 ```text
-Display statistics for GitHub pull requests.
+Count opened/closed/commented GitHub pull requests.
 Mandatory parameters:
 	--organization		GitHub organization
 	-o			GitHub organization (shorthand)
@@ -62,7 +62,7 @@ Examples:
 	lein run --organization docker --repositories docker,containerd
 ```
 
-Examples:
+More command examples:
 
 ```shell
 lein run --organization docker --repository containerd --token $token
