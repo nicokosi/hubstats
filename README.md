@@ -48,12 +48,12 @@ Mandatory parameters:
 	-t			GitHub access token (shorthand, optional)
 Optional parameters:
 	--repositories		Comma-separated list of repositories (optional)
-	--since-weeks		output events that occcured since this number of weeks (optional, default: 1)
-	-w			output events that occcured since this number of weeks (shorthand, optional, default: 1)
-	--since-days		output events that occcured since this number of days (optional)
-	-d			output events that occcured since this number of days (shorthand, optional)
-	--since			output events that occcured since a date with format '"yyyy-MM-dd'T'HH:mm:ssZ' (optional)
-	-s			output events that occcured since a date with format '"yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)
+	--since-weeks		output events that occurred since this number of weeks (optional, default: 1)
+	-w			output events that occurred since this number of weeks (shorthand, optional, default: 1)
+	--since-days		output events that occurred since this number of days (optional)
+	-d			output events that occurred since this number of days (shorthand, optional)
+	--since			output events that occurred since a date with format '"yyyy-MM-dd'T'HH:mm:ssZ' (optional)
+	-s			output events that occurred since a date with format '"yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)
 
 Examples:
 	lein run --organization docker --repository containerd --token $token

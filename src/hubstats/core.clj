@@ -19,12 +19,12 @@
     \t-t\t\t\tGitHub access token (shorthand, optional)
     Optional parameters:
     \t--repositories\t\tComma-separated list of repositories (optional)
-    \t--since-weeks\t\toutput events that occcured since this number of weeks (optional, default: 1)
-    \t-w\t\t\toutput events that occcured since this number of weeks (shorthand, optional, default: 1)
-    \t--since-days\t\toutput events that occcured since this number of days (optional)
-    \t-d\t\t\toutput events that occcured since this number of days (shorthand, optional)
-    \t--since\t\t\toutput events that occcured since a date with format 'yyyy-MM-dd'T'HH:mm:ssZ' (optional)
-    \t-s\t\t\toutput events that occcured since a date with format 'yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)
+    \t--since-weeks\t\toutput events that occurred since this number of weeks (optional, default: 1)
+    \t-w\t\t\toutput events that occurred since this number of weeks (shorthand, optional, default: 1)
+    \t--since-days\t\toutput events that occurred since this number of days (optional)
+    \t-d\t\t\toutput events that occurred since this number of days (shorthand, optional)
+    \t--since\t\t\toutput events that occurred since a date with format 'yyyy-MM-dd'T'HH:mm:ssZ' (optional)
+    \t-s\t\t\toutput events that occurred since a date with format 'yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)
 
     Examples:
     \tlein run --organization docker --repository containerd --token $token
