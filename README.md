@@ -4,7 +4,7 @@
 
 ## Prerequisite
 
-[Install leiningen](http://leiningen.org/#install) and run it on Java 8+.
+[Install Leiningen](http://leiningen.org/#install) and run it on Java 8+.
 
 ## Usage
 
@@ -33,6 +33,11 @@ List of all parameters:
 
 ```shell
 lein run
+```
+
+will output:
+
+```text
 Display statistics for GitHub pull requests.
 Mandatory parameters:
 	--organization		GitHub organization
@@ -57,9 +62,18 @@ Examples:
 	lein run --organization docker --repositories docker,containerd
 ```
 
+Examples:
+
+```shell
+lein run --organization docker --repository containerd --token $token
+lein run --organization docker --repository containerd --since "2017-01-17T00:00:00Z"
+lein run --organization docker --repository containerd --since-days 10
+lein run --organization docker --repositories docker,containerd
+```
+
 ## Command line installation
 
-### As a Java application (portable)
+### As a portable Java application
 
 Create JAR with all dependencies:
 
@@ -117,7 +131,7 @@ lein cljfmt fix
 
 ### Display dependencies
 
-As a tree:
+Display all dependencies, as a tree:
 
 ```shell
 lein deps :tree-data
@@ -130,8 +144,6 @@ lein ancient
 ```
 
 ### Upgrade dependencies
-
-Upgrade:
 
 ```shell
 lein ancient upgrade
