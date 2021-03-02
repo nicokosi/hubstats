@@ -15,7 +15,7 @@ lein run --organization $organization --repository $repository
 If an [access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) is required:
 
 ```shell
-lein run --organization $organization --repository $repository --token "$user:$token"
+lein run --organization $organization --repository $repository --token "$token"
 ```
 
 Output example:
@@ -44,8 +44,8 @@ Mandatory parameters:
 	-o			GitHub organization (shorthand)
 	--repository		GitHub repository
 	-r			GitHub repository (shorthand)
-	--token			GitHub access token prefixed with GitHub user and ':', i.e 'myUser:myToken' (optional)
-	-t			GitHub access token prefixed with GitHub user and ':', i.e 'myUser:myToken' (shorthand, optional)
+	--token			GitHub access token (optional)
+	-t			GitHub access token shorthand, optional)
 Optional parameters:
 	--repositories		Comma-separated list of repositories (optional)
 	--since-weeks		output events that occurred since this number of weeks (optional, default: 1)
@@ -56,7 +56,7 @@ Optional parameters:
 	-s			output events that occurred since a date with format '"yyyy-MM-dd'T'HH:mm:ssZ' (shorthand, optional)
 
 Examples:
-	lein run --organization docker --repository containerd --token "$user:$token"
+	lein run --organization docker --repository containerd --token "$token"
 	lein run --organization docker --repository containerd --since "2017-01-17T00:00:00Z"
 	lein run --organization docker --repository containerd --since-days 10
 	lein run --organization docker --repositories docker,containerd
