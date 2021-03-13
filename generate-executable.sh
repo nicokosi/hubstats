@@ -21,8 +21,8 @@ echo "Build executable from JAR via GraalVM:"
 gu install native-image && \
 native-image \
     --allow-incomplete-classpath \
-    --force-fallback \
     --initialize-at-build-time \
+    --no-fallback \
     --no-server \
     --report-unsupported-elements-at-runtime \
     -Dclojure.compiler.direct-linking=true \
