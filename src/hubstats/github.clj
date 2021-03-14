@@ -10,10 +10,9 @@
 (def date-format (time-format/formatter "yyyy-MM-dd'T'HH:mm:ssZ"))
 
 (defn github-api-events [org repo token page]
-  (let [url (str "https://api.github.com/repos/" org "/" repo "/events?page=" page)]
-    (json/read-str
-     ((http-client/get url {:headers {"Authorization" (str "token " token)
-                                      "Accept" "application/vnd.github.v3+json"}}) :body))))
+  (let [url (str "https://api.github.com/repos/" org "/" repo "/events?page=" page)
+        headers (if (empty? token) nil {"Authorization" (str "token " token)})]
+    (json/read-str ((http-client/get url {:headers headers}) :body))))
 
 (defn events
   ([org repo token page]
