@@ -7,4 +7,5 @@
 .clj-kondo/
 .idea
 .vscode
+hubstats.build_artifacts.txt
 hubstats
