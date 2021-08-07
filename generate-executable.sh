@@ -9,7 +9,7 @@ lein uberjar
 echo "Install GraalVM via SDKMAN!:"
 curl --silent "https://get.sdkman.io" | bash || echo 'SDKMAN! already installed'
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-GRAALVM_VERSION=21.1.0.r16-grl
+GRAALVM_VERSION=21.2.0.r16-grl
 
 sdkman_auto_answer=true \
     sdkman_auto_selfupdate=tr \
