@@ -1,0 +1,27 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Install Leiningen
+        uses: DeLaGuardo/setup-clojure@3.5
+        with:
+          lein: latest
+
+      - name: Lint
+        run: lein cljfmt check
+
+      - name: Test
+        run: lein test

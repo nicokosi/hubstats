@@ -1,4 +1,4 @@
-# hubstats [![Build Status](https://travis-ci.org/nicokosi/hubstats.svg?branch=master)](https://travis-ci.org/nicokosi/hubstats)
+# hubstats [![Build Status](https://github.com/nicokosi/hubstats/actions/workflows/ci.yml/badge.svg)](https://github.com/nicokosi/hubstats/actions/workflows/ci.yml)
 
 `hubstats` is a command line tool to count opened/closed/commented GitHub pull requests.
 
