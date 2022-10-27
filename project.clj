@@ -9,7 +9,7 @@
                  [hato "0.8.2"],
                  [slingshot "0.12.2"],
                  [clj-time "0.15.2"],
-                 [org.clojure/core.async "1.5.648"]]
+                 [org.clojure/core.async "1.6.673"]]
   :main ^:skip-aot hubstats.core
   :plugins [[lein-ancient "0.7.0"]
             [lein-cljfmt "0.9.0"]]
