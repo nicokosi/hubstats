@@ -12,5 +12,5 @@
                  [org.clojure/core.async "1.6.673"]]
   :main ^:skip-aot hubstats.core
   :plugins [[lein-ancient "0.7.0"]
-            [lein-cljfmt "0.9.0"]]
+            [lein-cljfmt "0.9.2"]]
   :profiles {:uberjar {:aot :all}})
