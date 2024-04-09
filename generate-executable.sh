@@ -20,7 +20,6 @@ sdk use java $GRAALVM_VERSION
 echo "Build executable from JAR via GraalVM:"
 gu install native-image && \
 native-image \
-    --allow-incomplete-classpath \
     --initialize-at-build-time \
     --no-fallback \
     --report-unsupported-elements-at-runtime \
