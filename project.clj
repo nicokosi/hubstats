@@ -6,7 +6,7 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.11.4"],
                  [org.clojure/data.json "2.5.0"],
-                 [hato "0.9.0"],
+                 [hato "1.0.0"],
                  [slingshot "0.12.2"],
                  [clj-time "0.15.2"],
                  [org.clojure/core.async "1.6.681"]]
