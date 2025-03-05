@@ -16,7 +16,7 @@ jobs:
           java-version: '11'
 
       - name: Install Leiningen
-        uses: DeLaGuardo/setup-clojure@13.1
+        uses: DeLaGuardo/setup-clojure@13.2
         with:
           lein: latest
 
