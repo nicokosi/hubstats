@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '25'
 
       - name: Install Leiningen
         uses: DeLaGuardo/setup-clojure@13.6.1
